@@ -24,7 +24,7 @@ SECRET_KEY = '-b$bh=y-)hg#^$5ji5!0f+s_v+*e58=lw6jy^mfgj8y3o#@!)o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['39.98.8.145:8000']
 
 # Application definition
 
@@ -80,10 +80,10 @@ DATABASES = {
         'PASSWORD': 'Yuhan235',
         'HOST': '47.98.117.129',
         'PORT': '3306',
-        # 'OPTIONS': {
-        #     'init_command': "SET sql_mode='traditional'",
-        #     'charset': 'utf8mb4',
-        # },
+        'OPTIONS': {
+            'init_command': "SET sql_mode='traditional'",
+            'charset': 'utf8mb4',
+        },
 
         'ATOMIC_REQUEST': True,
     },
@@ -135,6 +135,6 @@ REST_FRAMEWORK={
     'UNAUTHENTICATED_USER':hello,
     'UNAUTHENTICATED_TOKEN':None,
 
-    'DEFAULT_PERMISSION_CLASSES':None
+    # 'DEFAULT_PERMISSION_CLASSES':None
 }
 
