@@ -80,10 +80,10 @@ DATABASES = {
         'PASSWORD': 'Yuhan235',
         'HOST': '47.98.117.129',
         'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='traditional'",
-            'charset': 'utf8mb4',
-        },
+        # 'OPTIONS': {
+        #     'init_command': "SET sql_mode='traditional'",
+        #     'charset': 'utf8mb4',
+        # },
 
         'ATOMIC_REQUEST': True,
     },
