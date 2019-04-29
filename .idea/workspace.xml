@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad13b1df-e84c-4add-a262-e7c4baeb2c1b" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/utils/permission.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/utils/throttles.py" afterDir="false" />
@@ -10,6 +11,9 @@
       <change beforePath="$PROJECT_DIR$/restapi/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/restapi/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/restapi/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/restapi/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/auth.py" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +43,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/restFramework/settings.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -71,15 +76,32 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="499">
               <caret line="67" column="56" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="56" />
+=======
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/restFramework/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="26" column="37" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/request.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="309">
               <caret line="154" column="23" selection-start-line="154" selection-start-column="23" selection-end-line="154" selection-end-column="23" />
+=======
+        <entry file="file://$PROJECT_DIR$/restFramework/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="399">
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
+              <folding>
+                <element signature="e#637#669#0" expanded="true" />
+              </folding>
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
             </state>
           </provider>
         </entry>
@@ -94,6 +116,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/utils/permission.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="266">
@@ -122,6 +145,12 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
               <caret line="83" column="35" selection-start-line="83" selection-start-column="31" selection-end-line="83" selection-end-column="35" />
+=======
+        <entry file="file://$PROJECT_DIR$/restapi/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-482">
+              <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -132,8 +161,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/restapi/urls.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="114">
               <caret line="6" column="38" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="38" />
+=======
+            <state relative-caret-position="95">
+              <caret line="5" column="22" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="22" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -176,11 +210,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1096" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="40" />
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="832" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -188,17 +222,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="restFramework" type="b2602c69:ProjectViewProjectNode" />
-              <item name="restFramework" type="462c0819:PsiDirectoryNode" />
+              <item name="rest-framework" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-framework" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="restFramework" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-framework" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-framework" type="462c0819:PsiDirectoryNode" />
               <item name="restFramework" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="restapi" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -210,11 +245,14 @@
               <item name="restFramework" type="b2602c69:ProjectViewProjectNode" />
               <item name="restFramework" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -222,7 +260,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -302,12 +340,18 @@
       <workItem from="1556094395283" duration="13700000" />
       <workItem from="1556161731652" duration="241000" />
       <workItem from="1556161980764" duration="333000" />
+<<<<<<< HEAD
       <workItem from="1556162323005" duration="21900000" />
       <workItem from="1556502274465" duration="14940000" />
+=======
+      <workItem from="1556162323005" duration="19361000" />
+      <workItem from="1556335183728" duration="2535000" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="51114000" />
   </component>
   <component name="ToolWindowManager">
@@ -321,6 +365,20 @@
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286334" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.30911064" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
+=======
+    <option name="totallyTimeSpent" value="36170000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="40" y="23" width="1440" height="832" extended-state="0" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1702432" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.30945945" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -328,7 +386,11 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.329718" />
+=======
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.58513516" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -342,13 +404,7 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/models.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/db/models/query.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4161">
-          <caret line="243" selection-start-line="243" selection-end-line="243" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/db/models/query.py" />
     <entry file="file://$PROJECT_DIR$/restFramework/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
@@ -364,16 +420,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework-stubs/views.pyi">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework-stubs/views.pyi" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/utils/autoreload.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/dispatch/dispatcher.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/request.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/core/handlers/exception.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/core/handlers/base.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/views/decorators/csrf.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/authentication.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/settings.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/views/generic/base.py" />
+    <entry file="file://$PROJECT_DIR$/restapi/tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-287">
-          <caret line="29" column="41" lean-forward="true" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="41" />
+        <state relative-caret-position="399">
+          <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
           <folding>
-            <element signature="e#0#87#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/utils/autoreload.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
@@ -420,6 +487,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/restapi/tests.py">
+=======
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/permissions.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/schemas/generators.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/views.py" />
+    <entry file="file://$PROJECT_DIR$/utils/auth.py">
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
           <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
@@ -429,6 +502,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/schemas/generators.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7049">
@@ -471,12 +545,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
           <caret line="6" column="38" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="38" />
+=======
+    <entry file="file://$PROJECT_DIR$/restapi/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-482">
+          <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/restapi/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="22" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="22" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/rest_framework/request.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
@@ -511,10 +602,19 @@
           <caret line="16" column="45" lean-forward="true" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/restFramework/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+          <folding>
+            <element signature="e#637#669#0" expanded="true" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/utils/permission.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
@@ -539,6 +639,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
           <caret line="9" column="37" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="37" />
+=======
+    <entry file="file://$PROJECT_DIR$/restFramework/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="26" column="37" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
+>>>>>>> 71499675db63bbcb48f1bdd8837b52958c76f34a
         </state>
       </provider>
     </entry>
