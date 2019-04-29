@@ -5,7 +5,10 @@ from rest_framework.authentication import BaseAuthentication,BasicAuthentication
 class Authtication(BaseAuthentication):
     #  方法名不能变
     def authenticate(self, request):
-        token = request._request.GET.get("token")
+        if (request._request.GET.get("token") is None):
+            token=request._request.POST.get("token")
+        else:
+            token = request._request.GET.get("token")
         print('token', token)
         token_obj = models.UserToken.objects.filter(user_token=token).first()
         if not token_obj:

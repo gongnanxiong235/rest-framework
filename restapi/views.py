@@ -7,8 +7,7 @@ from rest_framework.request import Request
 from rest_framework import exceptions
 from rest_framework.authentication import BasicAuthentication
 import time, hashlib
-
-
+from utils import permission
 
 ORDER_DICT = [{
     'order_id':1,
@@ -40,13 +39,17 @@ class AuthView(APIView):
 
     # 跳过认证
     authentication_classes = []
+    # 跳过权限
+    permission_classes = []
+    # 跳过节流
+    throttle_classes = []
     def post(self, request, *args, **kwargs):
         ret = {'code': 1000, 'msg': None}
         try:
+
             user_name = request._request.POST.get("user_name")
             password = request._request.POST.get("password")
             obj = models.UserInfo.objects.filter(user_name=user_name, password=password)
-            print('a', obj)
             if not obj:
                 ret['code'] = 1001
                 ret['msg'] = '账户名或者密码错误'
@@ -75,11 +78,9 @@ class AuthView(APIView):
 
 # 用户认证token校验
 class OrderView(APIView):
-
     # 如果低于个类对象的authenticate方法返回None  交给下一个类对象执行
     def get(self, request, *args, **kwargs):
         ret = {'code': 1000, 'msg': None}
-
         # request.user request.auth 是固定写法，是Authtication 的authenticate 的返回值（返回值是一个元祖）
         print('user', request.user)
         print('auth', request.auth)
@@ -89,4 +90,11 @@ class OrderView(APIView):
         except Exception as e:
             ret['code'] = 1002
             ret['msg'] = '请求异常'
+        return JsonResponse(ret)
+
+class UserInfo(APIView):
+    # 局部权限
+    permission_classes = [permission.SVIPPermission]
+    def post(self,request, *args, **kwargs):
+        ret = {'code': 1000, 'msg': 'UserInfo'}
         return JsonResponse(ret)

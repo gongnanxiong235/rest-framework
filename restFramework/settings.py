@@ -134,7 +134,14 @@ REST_FRAMEWORK={
     #配置匿名用户  UNAUTHENTICATED_USER 和 UNAUTHENTICATED_TOKEN 跟的是函数名  也可以用lamda表达式：lamda:'hello'
     'UNAUTHENTICATED_USER':hello,
     'UNAUTHENTICATED_TOKEN':None,
+    # 全局权限认证
+    'DEFAULT_PERMISSION_CLASSES':['utils.permission.MyPermission',],
 
-    'DEFAULT_PERMISSION_CLASSES':None
+    #访问频率配置
+    'DEFAULT_THROTTLE_CLASSES':['utils.throttles.IPThrottles'],
+    'DEFAULT_THROTTLE_RATES':{
+        #配置频率 每分钟访问3次  gnx为scope的值，写在类中
+        'gnx':'3/m'
+    }
 }
 
