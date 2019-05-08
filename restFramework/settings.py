@@ -127,7 +127,7 @@ STATIC_URL = '/static/'
 
 def hello():
     return 'gnx'
-# rest_framework 认证（如token）的配置
+# rest_framework 认证（如token）的配置]
 REST_FRAMEWORK={
     #全局使用的认证类
     'DEFAULT_AUTHENTICATION_CLASSES':['utils.auth.Authtication',],
@@ -142,6 +142,14 @@ REST_FRAMEWORK={
     'DEFAULT_THROTTLE_RATES':{
         #配置频率 每分钟访问3次  gnx为scope的值，写在类中
         'gnx':'3/m'
-    }
+    },
+
+    # 配置版本控制
+    'DEFAULT_VERSIONING_CLASS':'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION':'V1',
+    'VERSION_PARAM':'version',
+    #允许的版本
+    # 'ALLOWED_VERSION':[]
+
 }
 

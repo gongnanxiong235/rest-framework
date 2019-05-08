@@ -8,6 +8,7 @@ from rest_framework import exceptions
 from rest_framework.authentication import BasicAuthentication
 import time, hashlib
 from utils import permission
+from rest_framework.versioning import URLPathVersioning
 
 ORDER_DICT = [{
     'order_id':1,
@@ -98,3 +99,18 @@ class UserInfo(APIView):
     def post(self,request, *args, **kwargs):
         ret = {'code': 1000, 'msg': 'UserInfo'}
         return JsonResponse(ret)
+
+
+class Version(APIView):
+    # 跳过认证
+    authentication_classes=[]
+    # 跳过权限
+    permission_classes=[]
+    # 跳过节流
+    throttle_classes=[]
+    def get(self, request, *args, **kwargs):
+        # 获取版本，如果没有加版本默认为v1  在setting中可以进行默认版本的配置
+        print(request.version)
+        # 反向获取请求的地址 第一个参数是在urels中配置路由 后面的name  re_path(r'^(?P<version>v[0-9].[0-9]+)/version/$', v.Version.as_view(),name='user'),
+        print(request.versioning_scheme.reverse('user',request=request))
+        return HttpResponse((request.version,request.versioning_scheme.reverse('user',request=request)))
