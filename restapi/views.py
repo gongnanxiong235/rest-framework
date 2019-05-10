@@ -9,6 +9,7 @@ from rest_framework.authentication import BasicAuthentication
 import time, hashlib
 from utils import permission
 from rest_framework.versioning import URLPathVersioning
+from rest_framework.parsers import JSONParser,FormParser
 
 ORDER_DICT = [{
     'order_id':1,
@@ -114,3 +115,22 @@ class Version(APIView):
         # 反向获取请求的地址 第一个参数是在urels中配置路由 后面的name  re_path(r'^(?P<version>v[0-9].[0-9]+)/version/$', v.Version.as_view(),name='user'),
         print(request.versioning_scheme.reverse('user',request=request))
         return HttpResponse((request.version,request.versioning_scheme.reverse('user',request=request)))
+
+
+class ParseView(APIView):
+    authentication_classes=[]
+    permission_classes=[]
+    '''
+    如果列表中是JSONParser:表示请求的时候必须以json格式请求 content-type:application/json,
+    request._request.POST没数据,如果Header中 content-type:不是application/json 则会报错
+    '''
+    # parser_classes = [JSONParser,FormParser]
+    def post(self,request, *args, **kwargs):
+        print('post:',request._request.POST)
+        print ( 'haha', request._request.POST.get( 'name' ,None) )
+        # request.data 只能返回post请求的数据
+        print('data',request.data)
+        print('haha',request.data.get('name'))
+        return HttpResponse('hello')
+
+

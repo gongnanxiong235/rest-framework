@@ -146,10 +146,14 @@ REST_FRAMEWORK={
 
     # 配置版本控制
     'DEFAULT_VERSIONING_CLASS':'rest_framework.versioning.URLPathVersioning',
-    'DEFAULT_VERSION':'V1',
+    'DEFAULT_VERSION':'V1.0',
     'VERSION_PARAM':'version',
     #允许的版本
     # 'ALLOWED_VERSION':[]
+
+
+    # 解析器配置
+    'DEFAULT_PARSER_CLASSES':['rest_framework.parsers.JSONParser','rest_framework.parsers.FormParser',]
 
 }
 
