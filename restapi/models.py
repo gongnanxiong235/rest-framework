@@ -8,14 +8,31 @@
 from django.db import models
 
 
+class UserGroup(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_group'
+
+
 class UserInfo(models.Model):
     user_type = models.IntegerField()
     user_name = models.CharField(max_length=32)
     password = models.CharField(max_length=100)
+    group_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'user_info'
+
+
+class UserRole(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_role'
 
 
 class UserToken(models.Model):
@@ -25,3 +42,12 @@ class UserToken(models.Model):
     class Meta:
         managed = False
         db_table = 'user_token'
+
+
+class UserinfoRoles(models.Model):
+    user_id = models.IntegerField(blank=True, null=True)
+    role_id = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'userinfo_roles'

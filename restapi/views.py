@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework import exceptions
 from rest_framework.authentication import BasicAuthentication
-import time, hashlib
+import time, hashlib,json
 from utils import permission
 from rest_framework.versioning import URLPathVersioning
 from rest_framework.parsers import JSONParser,FormParser
@@ -132,5 +132,75 @@ class ParseView(APIView):
         print('data',request.data)
         print('haha',request.data.get('name'))
         return HttpResponse('hello')
+
+
+from rest_framework import serializers
+class RoleSerializers(serializers.Serializer):
+    id=serializers.IntegerField()
+    title=serializers.CharField()
+
+class Roleview(APIView):
+    authentication_classes=[]
+    permission_classes=[]
+    def get(self,request, *args, **kwargs):
+        ret={'code': 1000, 'msg': None, 'data': None}
+        '''方式一序列化'''
+        # roles=models.UserRole.objects.all().values('id','title')
+        # role_list=list(roles)
+
+        '''方式二序列化'''
+        roles=models.UserRole.objects.all()
+        ser=RoleSerializers(instance=roles,many=True)
+        data=json.dumps(ser.data,ensure_ascii=False) # 显示中文
+
+        ret['data']=data
+        print(ret)
+        return JsonResponse(ret)
+
+class UserInfoSerializers(serializers.Serializer):
+    user_id=serializers.IntegerField(source='id')
+    # user_type=serializers.ChoiceField(choices=((1,'普通用户'),(2,'VIP用户'),(3,'超级VIP 用户')))
+    user_type=serializers.SerializerMethodField()
+    user_name=serializers.CharField()
+    group_name=serializers.SerializerMethodField()
+    roles=serializers.SerializerMethodField()
+
+    def get_roles(self,obj):
+        role_name=list()
+        user_id=obj.id
+        role_ids=models.UserinfoRoles.objects.filter(user_id=user_id).values('role_id')
+        for rid in role_ids:
+            role_obj=models.UserRole.objects.filter(id=rid.get('role_id')).first()
+            role_name.append(role_obj.title)
+        return role_name
+
+    def get_user_type(self,obj):
+        type=obj.user_type
+        if type==1:
+            return '普通用户'
+        elif type==2:
+            return 'vip用户'
+        elif type==3:
+            return ' 超级VIP用户'
+
+    def get_group_name(self,obj):
+        print('obj',obj)
+        if obj.group_id:
+            print(obj.id)
+            group=models.UserGroup.objects.filter(id=obj.group_id).first()
+            if group:
+                return {"id":group.id,'title':group.title}
+        return None
+
+class UseretailView(APIView):
+    authentication_classes=[]
+    permission_classes=[]
+    def get(self,request, *args, **kwargs):
+        ret={"code": 1000, "msg": None, "data": None}
+        data=json.dumps(UserInfoSerializers(models.UserInfo.objects.all().first(),many=False).data,ensure_ascii=False)
+        ret['data']=data
+        print(JsonResponse ( ret ).content)
+        # return JsonResponse ( ret )
+        return HttpResponse(data)
 
 
