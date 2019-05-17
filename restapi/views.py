@@ -304,3 +304,41 @@ class UserDetailLink(APIView):
         ser = UserInfoSerializers3(instance=obj, many=True, context={'request': request})
         ret = json.dumps(ser.data, ensure_ascii=False)
         return HttpResponse(ret)
+
+
+#  分页
+
+class RoleSer(serializers.ModelSerializer):
+    class Meta:
+        model=models.UserRole
+        fields="__all__"
+from rest_framework.pagination import PageNumberPagination
+#  渲染器
+from rest_framework.response import Response
+class MyPageNumberPagination(PageNumberPagination):
+    # 默认每页显示多少个
+    page_size = 2
+    page_query_param = 'page'
+    # 可以不用默认显示的个数 用size=3 这种方式在请求参数上自定义显示多少个
+    page_size_query_param = 'size'
+    #  每页最多显示多少个
+    max_page_size = 10
+    last_page_strings = ('last',)
+
+class PageView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    def get(self,request, *args, **kwargs):
+        # 框架自带的分页
+        # http://127.0.0.1:8000/api/v1.0/page1/?page=2这种方式请求
+        # pg = PageNumberPagination()
+        pg=MyPageNumberPagination()
+        qs=models.UserRole.objects.all()
+        pg_queryset=pg.paginate_queryset(queryset=qs, request=request, view=self)
+        ser=RoleSer(instance=pg_queryset,many=True,)
+       # return Response(ser.data)
+        return pg.get_paginated_response(ser.data)
+
+
+
+

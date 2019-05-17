@@ -13,4 +13,5 @@ urlpatterns = [
     re_path(r'^(?P<version>v[0-9].[0-9]+)/userdetail/$', v.UseretailView.as_view()),
     re_path(r'^(?P<version>v[0-9].[0-9]+)/userdetail3/$', v.UserDetailLink.as_view()),
     re_path(r'^(?P<version>v[0-9].[0-9]+)/group/(?P<pk>\d+)/userid_111111/$', v.GroupView.as_view(),name='gp'),
+    re_path(r'^(?P<version>v[0-9].[0-9]+)/page1/$', v.PageView.as_view()),
 ]
