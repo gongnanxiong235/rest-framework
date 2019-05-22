@@ -1,16 +1,16 @@
 from django.shortcuts import render, HttpResponse
 from restapi import models
 # from django import views
-from django.http import JsonResponse
+# from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework import exceptions, serializers
-from rest_framework.authentication import BasicAuthentication
-import time, hashlib, json
 from utils import permission
-from rest_framework.versioning import URLPathVersioning
-from rest_framework.parsers import JSONParser, FormParser
-
+from utils.jsonResponse import MyJsonResponse
+from utils.md import md5, password_md5
+from utils.seria import MyField, UserInfoSerializers, UserInfoSerializers2, UserInfoSerializers3, GroupSerializers, \
+    RoleSerializers, RoleSer
+from utils.pagination import MyPageNumberPagination
 ORDER_DICT = [{
     'order_id': 1,
     'name': 'iphonex max',
@@ -24,18 +24,23 @@ ORDER_DICT = [{
 }]
 
 
-def md5(user_name):
-    ctime = str(time.time())
-    m = hashlib.md5(bytes(user_name, encoding='utf-8'))
-    m.update(bytes(ctime, encoding='utf-8'))
-    return m.hexdigest()
+class RegistView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, *args, **kwargs):
+        user_name = request._request.GET.get('user_name')
+        password = request._request.GET.get('password')
+        count = models.UserInfo.objects.filter(user_name=user_name).count()
+        if (count != 0):
+            return MyJsonResponse(data=[], code=1001, msg='用户已经存在')
+        models.UserInfo.objects.create(user_name=user_name, password=password_md5(password=password), user_type=1,
+                                       group_id=1)
+        return MyJsonResponse(data=[], code=1000, msg='ok')
 
 
-# Create your views here.
-def create_user(user_type, user_name, password):
-    models.UserInfo.objects.create(user_type=user_type, user_name=user_name, password=password)
-
-
+# 跳过所有认证
 class AuthView(APIView):
     # 跳过认证
     authentication_classes = []
@@ -45,15 +50,15 @@ class AuthView(APIView):
     throttle_classes = []
 
     def post(self, request, *args, **kwargs):
-        ret = {'code': 1000, 'msg': None}
         try:
-
             user_name = request._request.POST.get("user_name")
             password = request._request.POST.get("password")
-            obj = models.UserInfo.objects.filter(user_name=user_name, password=password)
+            print(user_name)
+            print(password)
+            obj = models.UserInfo.objects.filter(user_name=user_name, password=password_md5(password))
+            print(obj)
             if not obj:
-                ret['code'] = 1001
-                ret['msg'] = '账户名或者密码错误'
+                return MyJsonResponse(data=[], code=1001, msg='用户名或密码错误')
             else:
                 # 为用户登录创建token
                 token = md5(user_name)
@@ -67,18 +72,12 @@ class AuthView(APIView):
                 else:
                     # 更新
                     models.UserToken.objects.update(user_id=user_id, user_token=token)
-                ret['code'] = 1000
-                ret['msg'] = 'OK'
-                ret['data'] = {'token': token, "user_id": user_id}
         except Exception as e:
-            print(e)
-            ret['code'] = 1002
-            ret['msg'] = '请求异常'
-
-        return JsonResponse(ret)
+            return MyJsonResponse(data=[], code=1002, msg='请求异常')
+        return MyJsonResponse(data={'token': token, "user_id": user_id}, code=1000, msg='ok')
 
 
-# 用户认证token校验
+# 用户认证token校验和黑名单校验
 class OrderView(APIView):
     # 如果低于个类对象的authenticate方法返回None  交给下一个类对象执行
     def get(self, request, *args, **kwargs):
@@ -90,20 +89,20 @@ class OrderView(APIView):
             ret['data'] = ORDER_DICT
             ret['msg'] = 'OK'
         except Exception as e:
-            ret['code'] = 1002
-            ret['msg'] = '请求异常'
-        return JsonResponse(ret)
+            return MyJsonResponse(data=[], code=1002, msg='请求异常')
+        return MyJsonResponse(data=ORDER_DICT, code=1000, msg='ok')
 
 
+# 权限控制
 class UserInfo(APIView):
     # 局部权限
     permission_classes = [permission.SVIPPermission]
 
     def post(self, request, *args, **kwargs):
-        ret = {'code': 1000, 'msg': 'UserInfo'}
-        return JsonResponse(ret)
+        return MyJsonResponse(code=1000, msg='UserInfo', data=[])
 
 
+# 版本控制
 class Version(APIView):
     # 跳过认证
     authentication_classes = []
@@ -120,6 +119,7 @@ class Version(APIView):
         return HttpResponse((request.version, request.versioning_scheme.reverse('user', request=request)))
 
 
+# 解析器
 class ParseView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -138,145 +138,36 @@ class ParseView(APIView):
         return HttpResponse('hello')
 
 
-class RoleSerializers(serializers.Serializer):
-    id = serializers.IntegerField()
-    title = serializers.CharField()
-
-
 class Roleview(APIView):
     authentication_classes = []
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        ret = {'code': 1000, 'msg': None, 'data': None}
-        '''方式一序列化'''
+        # 方式一序列化
         # roles=models.UserRole.objects.all().values('id','title')
         # role_list=list(roles)
 
         '''方式二序列化'''
         roles = models.UserRole.objects.all()
         ser = RoleSerializers(instance=roles, many=True)
-        data = json.dumps(ser.data, ensure_ascii=False)  # 显示中文
-
-        ret['data'] = data
-        print(ret)
-        return JsonResponse(ret)
+        return MyJsonResponse(data=ser.data, code=1000, msg='ok')
 
 
-# 可以对序列化字段的值进行加工和定制  == user_name = serializers.CharField()
-class MyField(serializers.CharField):
-    def to_representation(self, value):
-        if value == 'gongnanxiong':
-            return 'shuaige:' + value
-        return value
-
-
-# 序列化 方式1
-class UserInfoSerializers(serializers.Serializer):
-    user_id = serializers.IntegerField(source='id')
-    # user_type=serializers.ChoiceField(choices=((1,'普通用户'),(2,'VIP用户'),(3,'超级VIP 用户')))
-    user_type = serializers.SerializerMethodField()
-    # user_name = serializers.CharField()
-    user_name = MyField()
-    group_name = serializers.SerializerMethodField()
-    roles = serializers.SerializerMethodField()
-
-    def get_roles(self, obj):
-        role_name = list()
-        user_id = obj.id
-        role_ids = models.UserinfoRoles.objects.filter(user_id=user_id).values('role_id')
-        for rid in role_ids:
-            role_obj = models.UserRole.objects.filter(id=rid.get('role_id')).first()
-            role_name.append(role_obj.title)
-        return role_name
-
-    def get_user_type(self, obj):
-        type = obj.user_type
-        if type == 1:
-            return '普通用户'
-        elif type == 2:
-            return 'vip用户'
-        elif type == 3:
-            return ' 超级VIP用户'
-
-    def get_group_name(self, obj):
-        print('obj', obj)
-        if obj.group_id:
-            print(obj.id)
-            group = models.UserGroup.objects.filter(id=obj.group_id).first()
-            if group:
-                return {"id": group.id, 'title': group.title}
-        return None
-
-
-# 序列化 方式2
-class UserInfoSerializers2(serializers.ModelSerializer):
-    group_name = serializers.SerializerMethodField()
-    user_type = serializers.SerializerMethodField()
-    roles = serializers.SerializerMethodField()
-
-    class Meta:
-        model = models.UserInfo
-        # fields = "__all__"
-        fields = ['id', 'user_name', 'user_type', 'group_name', 'roles']
-        # depth = 1   有关联关系的自动查询
-
-    def get_roles(self, obj):
-        role_name = list()
-        user_id = obj.id
-        role_ids = models.UserinfoRoles.objects.filter(user_id=user_id).values('role_id')
-        for rid in role_ids:
-            role_obj = models.UserRole.objects.filter(id=rid.get('role_id')).first()
-            role_name.append(role_obj.title)
-        return role_name
-
-    def get_user_type(self, obj):
-        type = obj.user_type
-        if type == 1:
-            return '普通用户'
-        elif type == 2:
-            return 'vip用户'
-        elif type == 3:
-            return ' 超级VIP用户'
-
-    def get_group_name(self, obj):
-        print('obj', obj)
-        if obj.group_id:
-            print(obj.id)
-            group = models.UserGroup.objects.filter(id=obj.group_id).first()
-            if group:
-                return {"id": group.id, 'title': group.title}
-        return None
-
-
+# 自定义的的方式序列化
 class UseretailView(APIView):
     authentication_classes = []
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        ret = {"code": 1000, "msg": None, "data": None}
-        data = json.dumps(UserInfoSerializers(models.UserInfo.objects.all(), many=True).data, ensure_ascii=False)
-        ret['data'] = data
-        print(JsonResponse(ret).content)
-        # return JsonResponse ( ret )
-        return HttpResponse(data)
-
-
-# 序列化 方式3  反向生成url的方式
-class UserInfoSerializers3(serializers.ModelSerializer):
-    # lookup_field='group_id',lookup_url_kwarg='pk':按照对用的group_id去生成url  如果不写 默认按照userinfo的id来生成
-    group = serializers.HyperlinkedIdentityField(view_name='gp', source='group_id', lookup_field='group_id',
-                                                 lookup_url_kwarg='pk')
-
-    class Meta:
-        model = models.UserInfo
-        fields = "__all__"
-
-
-class GroupSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = models.UserGroup
-        fields = "__all__"
+        # data = json.dumps(UserInfoSerializers2(models.UserInfo.objects.all(), many=True).data, ensure_ascii=False)
+        # print(JsonResponse(ret).content)
+        # return JsonResponse ( ret ) 被序列化后用HttpResponse  自定义的字典形式用JsonResponse
+        # return HttpResponse(data)  HttpResponse 需json.dumps（ser.data）
+        '''Response无需json.dumps（ser.data）  直接传ser.data即可 可渲染浏览器'''
+        # return Response(UserInfoSerializers2(models.UserInfo.objects.all(), many=True).data)
+        #  自定义的方式返回
+        return MyJsonResponse(data=UserInfoSerializers2(models.UserInfo.objects.all(), many=True).data, msg='ok',
+                              code=1000)
 
 
 class GroupView(APIView):
@@ -284,16 +175,17 @@ class GroupView(APIView):
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        print('args',args)
-        print('kwargs',kwargs)
-        print('get',request._request.GET)
-        pk = kwargs.get('pk')
-        obj = models.UserGroup.objects.filter(id=pk).first()
-        ser = GroupSerializers(instance=obj, many=False)
-        ret = json.dumps(ser.data, ensure_ascii=False)
-        return HttpResponse(ret)
+        try:
+            pk = kwargs.get('pk')
+            obj = models.UserGroup.objects.filter(id=pk).first()
+            ser = GroupSerializers(instance=obj, many=False)
+            return MyJsonResponse(data=ser.data, code=1000, msg='ok')
+        except Exception as e:
+            print(e)
+            return MyJsonResponse(data=[], code=1001, msg='获取组信息失败')
 
 
+# 以反向生成URL的方式返回
 class UserDetailLink(APIView):
     authentication_classes = []
     permission_classes = []
@@ -302,43 +194,22 @@ class UserDetailLink(APIView):
         obj = models.UserInfo.objects.all()
         # 如果需要反向生成URL  必须加上context={'request': request}
         ser = UserInfoSerializers3(instance=obj, many=True, context={'request': request})
-        ret = json.dumps(ser.data, ensure_ascii=False)
-        return HttpResponse(ret)
+        return MyJsonResponse(ser.data)
 
-
-#  分页
-
-class RoleSer(serializers.ModelSerializer):
-    class Meta:
-        model=models.UserRole
-        fields="__all__"
-from rest_framework.pagination import PageNumberPagination
-#  渲染器
-from rest_framework.response import Response
-class MyPageNumberPagination(PageNumberPagination):
-    # 默认每页显示多少个
-    page_size = 2
-    page_query_param = 'page'
-    # 可以不用默认显示的个数 用size=3 这种方式在请求参数上自定义显示多少个
-    page_size_query_param = 'size'
-    #  每页最多显示多少个
-    max_page_size = 10
-    last_page_strings = ('last',)
-
+# 分页
 class PageView(APIView):
     authentication_classes = []
     permission_classes = []
-    def get(self,request, *args, **kwargs):
+    throttle_classes = []
+    def get(self, request, *args, **kwargs):
         # 框架自带的分页
         # http://127.0.0.1:8000/api/v1.0/page1/?page=2这种方式请求
         # pg = PageNumberPagination()
-        pg=MyPageNumberPagination()
-        qs=models.UserRole.objects.all()
-        pg_queryset=pg.paginate_queryset(queryset=qs, request=request, view=self)
-        ser=RoleSer(instance=pg_queryset,many=True,)
-       # return Response(ser.data)
-        return pg.get_paginated_response(ser.data)
-
-
-
-
+        pg = MyPageNumberPagination()
+        # qs = models.UserRole.objects.all()
+        qs = models.UserInfo.objects.all()
+        pg_queryset = pg.paginate_queryset(queryset=qs, request=request, view=self)
+        ser = UserInfoSerializers2(instance=pg_queryset, many=True, )
+        # http://127.0.0.1:8000/api/v1.0/page1/?page=1&size=4:显示第一页，每页显示4个
+        return MyJsonResponse(data=pg.get_paginated_response(ser.data).data,msg='ok',code=1000)
+        # return MyJsonResponse(data=pg.get_paginated_response(UserInfoSerializers2(models.UserInfo.objects.all(), many=True).data).data,msg='ok',code=1000)

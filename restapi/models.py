@@ -8,6 +8,14 @@
 from django.db import models
 
 
+class UserBlack(models.Model):
+    user_id = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'user_black'
+
+
 class UserGroup(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
 
