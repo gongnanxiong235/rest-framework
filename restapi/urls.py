@@ -15,4 +15,10 @@ urlpatterns = [
     re_path(r'^(?P<version>v[0-9].[0-9]+)/userdetail3/$', v.UserDetailLink.as_view()),
     re_path(r'^(?P<version>v[0-9].[0-9]+)/group/(?P<pk>\d+)/$', v.GroupView.as_view(),name='gp'),
     re_path(r'^(?P<version>v[0-9].[0-9]+)/page1/$', v.PageView.as_view()),
+    re_path(r'^(?P<version>v[0-9].[0-9]+)/page2/$', v.LimitPageView.as_view()),
+    re_path(r'^(?P<version>v[0-9].[0-9]+)/page3/$', v.CursorPageView.as_view()),
+    re_path(r'^(?P<version>v[0-9].[0-9]+)/gen/$', v.GenericView.as_view()),
+    re_path(r'^(?P<version>v[0-9].[0-9]+)/model/$', v.ViewsetView.as_view({'get':'list'})),
+    re_path(r'^(?P<version>v[0-9].[0-9]+)/model2/$', v.ViewsetView1.as_view({'get':'list'})),
+    re_path(r'^(?P<version>v[0-9].[0-9]+)/model2/(?P<pk>\d+)$', v.ViewsetView1.as_view({'get':'retrieve'})),
 ]

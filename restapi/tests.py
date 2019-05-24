@@ -20,8 +20,6 @@ if django.VERSION >= (1, 7):  # 自动判断版本
 
 
 if __name__ == "__main__":
-    from restapi import views
-    views.create_user(1,'lisi',111111)
-    views.create_user(2,'gongnanxiong',111111)
-    views.create_user(3,'admin','admin')
-    print('Done!')
+    hello=[1,3,4,2,7,45,43523,8,35,5]
+    a=sorted(hello,reverse=True)
+    print(a)

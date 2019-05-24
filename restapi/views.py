@@ -10,7 +10,10 @@ from utils.jsonResponse import MyJsonResponse
 from utils.md import md5, password_md5
 from utils.seria import MyField, UserInfoSerializers, UserInfoSerializers2, UserInfoSerializers3, GroupSerializers, \
     RoleSerializers, RoleSer
-from utils.pagination import MyPageNumberPagination
+from utils.pagination import MyPageNumberPagination, MyLimitOffsetPagination, MyCursorPagination
+from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import ModelViewSet
+
 ORDER_DICT = [{
     'order_id': 1,
     'name': 'iphonex max',
@@ -196,11 +199,13 @@ class UserDetailLink(APIView):
         ser = UserInfoSerializers3(instance=obj, many=True, context={'request': request})
         return MyJsonResponse(ser.data)
 
-# 分页
+
+# 分页 PageNumberPagination
 class PageView(APIView):
     authentication_classes = []
     permission_classes = []
     throttle_classes = []
+
     def get(self, request, *args, **kwargs):
         # 框架自带的分页
         # http://127.0.0.1:8000/api/v1.0/page1/?page=2这种方式请求
@@ -211,5 +216,75 @@ class PageView(APIView):
         pg_queryset = pg.paginate_queryset(queryset=qs, request=request, view=self)
         ser = UserInfoSerializers2(instance=pg_queryset, many=True, )
         # http://127.0.0.1:8000/api/v1.0/page1/?page=1&size=4:显示第一页，每页显示4个
-        return MyJsonResponse(data=pg.get_paginated_response(ser.data).data,msg='ok',code=1000)
+        return MyJsonResponse(data=pg.get_paginated_response(ser.data).data, msg='ok', code=1000)
         # return MyJsonResponse(data=pg.get_paginated_response(UserInfoSerializers2(models.UserInfo.objects.all(), many=True).data).data,msg='ok',code=1000)
+
+
+# 分页 LimitOffsetPagination
+class LimitPageView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, *args, **kwargs):
+        pg = MyLimitOffsetPagination()
+        qs = models.UserInfo.objects.all()
+        pg_queryset = pg.paginate_queryset(queryset=qs, request=request, view=self)
+        ser = UserInfoSerializers2(instance=pg_queryset, many=True, )
+        # http://127.0.0.1:8000/api/v1.0/page2/?offset=0&limit=4  从第0个开始取，向后取4条
+        return MyJsonResponse(data=pg.get_paginated_response(ser.data).data, msg='ok', code=1000)
+
+
+# 分页 CursorPagination
+class CursorPageView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, *args, **kwargs):
+        pg = MyCursorPagination()
+        qs = models.UserInfo.objects.all()
+        pg_queryset = pg.paginate_queryset(queryset=qs, request=request, view=self)
+        ser = UserInfoSerializers2(instance=pg_queryset, many=True, )
+        # http://127.0.0.1:8000/api/v1.0/page3/?cursor=cD03   页码是加密的 （适合上一页 下一个  不能自己选择页码  增强性能）
+        return MyJsonResponse(data=pg.get_paginated_response(ser.data).data, msg='ok', code=1000)
+
+
+# 视图 GenericAPIView  GenericAPIView继承APIView
+class GenericView(GenericAPIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+    queryset = models.UserInfo.objects.all()
+    serializer_class = UserInfoSerializers2
+    pagination_class = MyPageNumberPagination
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        pg = self.paginate_queryset(queryset)
+        ser = self.get_serializer(instance=pg, many=True)
+        return MyJsonResponse(data=ser.data)
+
+# 视图 ModelViewSet re_path(r'^(?P<version>v[0-9].[0-9]+)/model/$', v.ViewsetView.as_view({'get':'list'})),-->发get请求的时候交给list方法处理
+# 如果不重写list方法 默认会去找ModelViewSet的list方法-->再去找到ModelViewSet的父类mixins.ListModelMixin中的list方法
+class ViewsetView(ModelViewSet):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+    queryset = models.UserInfo.objects.all()
+    serializer_class = UserInfoSerializers2
+    pagination_class = MyPageNumberPagination
+# 视图重写list方法
+class ViewsetView1(ModelViewSet):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+    queryset = models.UserInfo.objects.all()
+    serializer_class = UserInfoSerializers2
+    pagination_class = MyPageNumberPagination
+    def list(self, request, *args, **kwargs):
+        # 调用父类的list方法，拿到数据
+        data=super(ModelViewSet,self).list(request, *args, **kwargs)
+        print(data)
+        return MyJsonResponse(data.data)
+
