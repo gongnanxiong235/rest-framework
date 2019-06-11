@@ -76,6 +76,7 @@ class AuthView(APIView):
                     # 更新
                     models.UserToken.objects.update(user_id=user_id, user_token=token)
         except Exception as e:
+            print(e)
             return MyJsonResponse(data=[], code=1002, msg='请求异常')
         return MyJsonResponse(data={'token': token, "user_id": user_id}, code=1000, msg='ok')
 
