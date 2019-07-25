@@ -100,10 +100,10 @@ class OrderView(APIView):
 # 权限控制
 class UserInfo(APIView):
     # 局部权限
-    permission_classes = [permission.SVIPPermission]
+    permission_classes = [permission.MyPermission]
 
     def post(self, request, *args, **kwargs):
-        return MyJsonResponse(code=1000, msg='UserInfo', data=[])
+        return MyJsonResponse(code=1000, msg='UserInfo', data=ORDER_DICT)
 
 
 # 版本控制
@@ -130,6 +130,10 @@ class ParseView(APIView):
     '''
     如果列表中是JSONParser:表示请求的时候必须以json格式请求 content-type:application/json,
     request._request.POST没数据,如果Header中 content-type:不是application/json 则会报错
+    '''
+
+    '''
+    request.POST在发JSON数据的时候是取不到值的，只有发urlecoding数据form-data数据才会有值.REST已经对request再次封装了，发送JSON，urlecoding,form-data等常用等常用的数据都封装到data里了，这样就解决了request.POST在发JSON数据`的时候是取不到值的
     '''
 
     # parser_classes = [JSONParser,FormParser]
@@ -266,6 +270,7 @@ class GenericView(GenericAPIView):
         ser = self.get_serializer(instance=pg, many=True)
         return MyJsonResponse(data=ser.data)
 
+
 # 视图 ModelViewSet re_path(r'^(?P<version>v[0-9].[0-9]+)/model/$', v.ViewsetView.as_view({'get':'list'})),-->发get请求的时候交给list方法处理
 # 如果不重写list方法 默认会去找ModelViewSet的list方法-->再去找到ModelViewSet的父类mixins.ListModelMixin中的list方法
 class ViewsetView(ModelViewSet):
@@ -275,6 +280,8 @@ class ViewsetView(ModelViewSet):
     queryset = models.UserInfo.objects.all()
     serializer_class = UserInfoSerializers2
     pagination_class = MyPageNumberPagination
+
+
 # 视图重写list方法
 class ViewsetView1(ModelViewSet):
     authentication_classes = []
@@ -283,9 +290,9 @@ class ViewsetView1(ModelViewSet):
     queryset = models.UserInfo.objects.all()
     serializer_class = UserInfoSerializers2
     pagination_class = MyPageNumberPagination
+
     def list(self, request, *args, **kwargs):
         # 调用父类的list方法，拿到数据
-        data=super(ModelViewSet,self).list(request, *args, **kwargs)
+        data = super(ModelViewSet, self).list(request, *args, **kwargs)
         print(data)
         return MyJsonResponse(data.data)
-

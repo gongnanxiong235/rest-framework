@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from restapi import models
 
+
 # 可以对序列化字段的值进行加工和定制  == user_name = serializers.CharField()
 class MyField(serializers.CharField):
     def to_representation(self, value):
@@ -87,6 +88,7 @@ class UserInfoSerializers2(serializers.ModelSerializer):
                 return {"id": group.id, 'title': group.title}
         return None
 
+
 # 序列化 方式3  反向生成url的方式
 class UserInfoSerializers3(serializers.ModelSerializer):
     # lookup_field='group_id',lookup_url_kwarg='pk':按照对用的group_id去生成url  如果不写 默认按照userinfo的id来生成
@@ -113,4 +115,22 @@ class RoleSerializers(serializers.Serializer):
 class RoleSer(serializers.ModelSerializer):
     class Meta:
         model = models.UserRole
+        fields = "__all__"
+
+
+# vue api
+
+class BolgListSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.Blog
+        fields = "__all__"
+
+
+class BolgCreateSerializers(serializers.ModelSerializer):
+    title = serializers.CharField(max_length=15, min_length=2, allow_blank=False)
+    auth = serializers.CharField(allow_blank=False, error_messages={'required': '缺少auth字段', 'blank': "auth值不能为空"},
+                                 required=True)
+
+    class Meta:
+        model = models.Blog
         fields = "__all__"

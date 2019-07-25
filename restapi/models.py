@@ -8,6 +8,17 @@
 from django.db import models
 
 
+class Blog(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateTimeField(blank=True, null=True)
+    auth = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'blog'
+
+
 class UserBlack(models.Model):
     user_id = models.IntegerField()
 

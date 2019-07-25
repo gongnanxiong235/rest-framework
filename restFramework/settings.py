@@ -29,6 +29,7 @@ CORS_ALLOW_HEADERS = ('*')
 CORS_ORIGIN_ALLOW_ALL= True
 
 # Application definition
+# pip install django-cors-headers
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'restapi.apps.RestapiConfig',
     'rest_framework',
+    'vueapi',
     'corsheaders'
 ]
 
@@ -151,7 +153,7 @@ REST_FRAMEWORK={
 
     # 配置版本控制
     'DEFAULT_VERSIONING_CLASS':'rest_framework.versioning.URLPathVersioning',
-    'DEFAULT_VERSION':'V1.0',
+    'DEFAULT_VERSION':'v1.0',
     'VERSION_PARAM':'version',
     #允许的版本
     # 'ALLOWED_VERSION':[]
