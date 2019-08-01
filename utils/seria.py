@@ -9,6 +9,10 @@ class MyField(serializers.CharField):
             return 'shuaige:' + value
         return value
 
+class date_time_fmt(serializers.CharField):
+    def to_representation(self, value):
+        print('value',value)
+        return 222
 
 # 序列化 方式1
 class UserInfoSerializers(serializers.Serializer):
@@ -130,6 +134,7 @@ class BolgCreateSerializers(serializers.ModelSerializer):
     title = serializers.CharField(max_length=15, min_length=2, allow_blank=False)
     auth = serializers.CharField(allow_blank=False, error_messages={'required': '缺少auth字段', 'blank': "auth值不能为空"},
                                  required=True)
+
 
     class Meta:
         model = models.Blog

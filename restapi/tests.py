@@ -20,6 +20,5 @@ if django.VERSION >= (1, 7):  # 自动判断版本
 
 
 if __name__ == "__main__":
-    hello=[1,3,4,2,7,45,43523,8,35,5]
-    a=sorted(hello,reverse=True)
-    print(a)
+    import datetime
+    print(datetime.datetime.now())
