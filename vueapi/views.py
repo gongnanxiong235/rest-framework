@@ -79,8 +79,9 @@ class BlogUpdate(APIView):
         params = request.query_params
         if ser.is_valid():
             try:
-                id = models.Blog.objects.filter(id=params.get("id")).update(title=params.get("title"),
+                models.Blog.objects.filter(id=params.get("id")).update(title=params.get("title"),
                                                                             date=params.get('date'),
+                                                                            url=params.get('url'),
                                                                             auth=params.get('auth'),
                                                                             update_time=datetime.datetime.now())
                 response = MyJsonResponse(data=[], code=1000, msg='更新成功')
