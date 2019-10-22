@@ -4,7 +4,15 @@ from restapi import models
 from utils import seria
 from utils.jsonResponse import MyJsonResponse
 import datetime, time
-from utils.pagination import MyPageNumberPagination
+from utils.pagination import MyPageNumberPagination, get_pagiration_result
+from utils.db_paginator import QueryWrapper
+from utils.db_cursor import fetchall_to_dict
+
+'''
+    django rest fremawork de Request 对象:
+        request.data 相当于request._request.POST(_request.POST在发JSON数据`的时候是取不到值的)
+        request.query_params==request._resuest.GET
+'''
 
 
 # Create your views here.
@@ -25,6 +33,21 @@ class BlogList(ModelViewSet):
         return MyJsonResponse(data.data, code=1000, msg='ok')
 
 
+# 使用原生sql返回列表
+class BlogListSql(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, *args, **kwargs):
+        # 使用自定义的分页，此分页集成与rest中的PageNumberPagination
+        pg = MyPageNumberPagination()
+        sql = "select id,title,url,`date`,auth,create_time from blog where is_delete=%s order by id desc"
+        queryset = fetchall_to_dict(sql=sql, params=(0))
+        result = get_pagiration_result("page", queryset, request, self)
+        return MyJsonResponse(result, code=1000, msg='ok')
+
+
 class BlogSeach(APIView):
     authentication_classes = []
     permission_classes = []
@@ -43,6 +66,25 @@ class BlogSeach(APIView):
             ser = serializer_class(instance=pg_queryset, many=True, )
             response = MyJsonResponse(data=pg.get_paginated_response(ser.data).data, msg="ok", code=1000)
         return response
+
+
+# 使用原生sql
+class BlogSeachSql(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, *args, **kwargs):
+        print(request.query_params)
+        keyword = request.query_params.get("keyword", None)
+        if keyword is None or keyword == "":
+            response = MyJsonResponse(data=[], code=-1, msg="keyword为空")
+        else:
+            sql = "select id,title,url,`date`,auth,create_time from blog where is_delete =%s and title like %s order by id desc"
+            queryset = fetchall_to_dict(sql=sql, params=(0, '%' + keyword + '%'))
+            # 自定义封装的通用的分页的方法
+            result = get_pagiration_result("page", queryset, request, self)
+            return MyJsonResponse(data=result, code=1000, msg="ok")
 
 
 class BlogCreate(APIView):
@@ -80,10 +122,10 @@ class BlogUpdate(APIView):
         if ser.is_valid():
             try:
                 models.Blog.objects.filter(id=params.get("id")).update(title=params.get("title"),
-                                                                            date=params.get('date'),
-                                                                            url=params.get('url'),
-                                                                            auth=params.get('auth'),
-                                                                            update_time=datetime.datetime.now())
+                                                                       date=params.get('date'),
+                                                                       url=params.get('url'),
+                                                                       auth=params.get('auth'),
+                                                                       update_time=datetime.datetime.now())
                 response = MyJsonResponse(data=[], code=1000, msg='更新成功')
             except Exception as e:
                 response = MyJsonResponse(data=[], code=1001, msg=str(e))

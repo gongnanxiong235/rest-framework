@@ -1,4 +1,6 @@
-from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination,CursorPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
+
+
 class MyPageNumberPagination(PageNumberPagination):
     # 默认每页显示多少个
     page_size = 15
@@ -27,3 +29,16 @@ class MyCursorPagination(CursorPagination):
     page_size_query_param = None
     max_page_size = 10
     offset_cutoff = 1000
+
+
+def get_pagiration_result(pg, queryset, request, view):
+    if pg == "page":
+        pg = MyPageNumberPagination()
+    if pg == "limit":
+        pg = MyLimitOffsetPagination()
+    if pg == "cursor":
+        pg = MyCursorPagination()
+    else:
+        pg = MyPageNumberPagination()
+    page = pg.paginate_queryset(queryset, request=request, view=view)
+    return pg.get_paginated_response(page).data

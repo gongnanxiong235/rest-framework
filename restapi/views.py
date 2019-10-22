@@ -13,6 +13,7 @@ from utils.seria import MyField, UserInfoSerializers, UserInfoSerializers2, User
 from utils.pagination import MyPageNumberPagination, MyLimitOffsetPagination, MyCursorPagination
 from rest_framework.generics import GenericAPIView
 from rest_framework.viewsets import ModelViewSet
+from utils.db_cursor import fetchall_to_dict, fetchone_to_dict
 
 ORDER_DICT = [{
     'order_id': 1,
@@ -205,6 +206,7 @@ class UserDetailLink(APIView):
         return MyJsonResponse(ser.data)
 
 
+
 # 分页 PageNumberPagination
 class PageView(APIView):
     authentication_classes = []
@@ -212,6 +214,7 @@ class PageView(APIView):
     throttle_classes = []
 
     def get(self, request, *args, **kwargs):
+
         # 框架自带的分页
         # http://127.0.0.1:8000/api/v1.0/page1/?page=2这种方式请求
         # pg = PageNumberPagination()
@@ -223,6 +226,28 @@ class PageView(APIView):
         # http://127.0.0.1:8000/api/v1.0/page1/?page=1&size=4:显示第一页，每页显示4个
         return MyJsonResponse(data=pg.get_paginated_response(ser.data).data, msg='ok', code=1000)
         # return MyJsonResponse(data=pg.get_paginated_response(UserInfoSerializers2(models.UserInfo.objects.all(), many=True).data).data,msg='ok',code=1000)
+
+
+# 使用原生sql
+class PageViewSql(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, *args, **kwargs):
+        sql = "select user_info.id, user_name,user_type,group_id as `group` from user_info inner join  user_group on user_info.group_id=user_group.id where user_info.group_id=1"
+        queryset = fetchall_to_dict(sql=sql)
+        print(queryset)
+        # 取出所有的group_id
+        for row in queryset:
+            group_id = row.get("group")
+            sql_group = "select id,title from user_group where id=%s"
+            query_set_gropu = fetchone_to_dict(sql=sql_group, params=(group_id))
+            row["group"] = query_set_gropu
+        page_number_pagiration = MyPageNumberPagination()
+        page = page_number_pagiration.paginate_queryset(queryset, request=request, view=self)
+        result = page_number_pagiration.get_paginated_response(page).data
+        return MyJsonResponse(data=result, msg='ok', code=1000)
 
 
 # 分页 LimitOffsetPagination
